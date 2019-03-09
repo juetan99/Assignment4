@@ -11,12 +11,16 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     Button firstButton = null;
+    LinearLayout linearLayout = null;
+
     private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        linearLayout = (LinearLayout)findViewById(R.id.scrollViewLayout);
 
         firstButton = (Button)findViewById(R.id.btnSubmit);
         firstButton.setOnClickListener(new View.OnClickListener() {
@@ -29,14 +33,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
         private void generateNewButton() {
-           Button newButton = new Button(MainActivity.this);
+           final Button newButton = new Button(MainActivity.this);
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             newButton.setLayoutParams(layoutParams);
 
             newButton.setText("PRESS ME: " + Integer.toString(++count));
+            newButton.setTextColor(getRandomColor());
 
+            newButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    generateNewButton();
+                    newButton.setEnabled(false);
+                }
+            });
+
+            linearLayout.addView(newButton);
 
         }
 
